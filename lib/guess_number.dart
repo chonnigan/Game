@@ -9,39 +9,59 @@ void main() {
   //literal
   const maxRandom = 100; //compile-time constant
   var game = Game();
-  //var random = Random();
-  //var answer = random.nextInt(maxRandom) + 1;
-  var isCorrect = false;
-  //var guessCount = 0;
 
-  print('╔════════════════════════════════════════');
-  print('║            GUESS THE NUMBER            ');
-  print('╟────────────────────────────────────────');
+  //var p = false;
 
-  do {
-    stdout.write('║ Guess the number between 1 and $maxRandom: ');
-    var input = stdin.readLineSync();
-    var guess = int.tryParse(input!);
-    if (guess == null) {
-      continue;
+  while (true) {
+
+    print('╔════════════════════════════════════════');
+    print('║            GUESS THE NUMBER            ');
+    print('╟────────────────────────────────────────');
+    var guessCount = 0;
+    var isCorrect = false;
+    do {
+      stdout.write('║ Guess the number between 1 and $maxRandom: ');
+      var input = stdin.readLineSync();
+      var guess = int.tryParse(input!);
+      if (guess == null) {
+        continue;
+      }
+      guessCount++;
+      var result = game.doGuess(guess);
+
+      if (game.doGuess(guess) == 1) {
+        print('║ ➜ $guess is TOO HIGH! ▲');
+        print('╟────────────────────────────────────────');
+      } else if (game.doGuess(guess) == -1) {
+        print('║ ➜ $guess is TOO LOW! ▼');
+        print('╟────────────────────────────────────────');
+      } else {
+        print('║ ➜ $guess is CORRECT ❤, total guesses: $guessCount');
+        print('╟────────────────────────────────────────');
+        isCorrect = true;
+      }
     }
+    while (!isCorrect);
 
-    //guessCount++;
-    var result = game.doGuess(guess);
-    var sum = game.guessCount;
-    if (result ==1) {
-      print('║ ➜ $guess is TOO HIGH! ▲');
-      print('╟────────────────────────────────────────');
-    } else if (result == -1) {
-      print('║ ➜ $guess is TOO LOW! ▼');
-      print('╟────────────────────────────────────────');
-    } else {
-      print('║ ➜ $guess is CORRECT ❤, total guesses: $sum');
-      print('╟────────────────────────────────────────');
-      isCorrect = true;
+    print('║                 THE END                ');
+    print('╚════════════════════════════════════════');
+
+    var get = "";
+    while (true) {
+      stdout.write('play again? (Y/N): ');
+      get = stdin.readLineSync()!;
+      if (get.toUpperCase() == 'Y' || get.toUpperCase() == 'y') {
+        break;
+      }
+      else if (get.toUpperCase() == 'N' || get.toUpperCase() == 'n') {
+        exit(0);
+      }
     }
-  } while (!isCorrect);
-
-  print('║                 THE END                ');
-  print('╚════════════════════════════════════════');
+    game = Game();
+  }
 }
+
+
+
+
+
